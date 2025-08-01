@@ -1,23 +1,36 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createSupabaseServerClient } from '@/lib/supabaseServer'
+import { NextResponse } from 'next/server'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies as getCookies } from 'next/headers'
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const supabase = createSupabaseServerClient()
+export async function DELETE(req: Request) {
+  const supabase = createRouteHandlerClient({ cookies: getCookies })
 
-  const { data: { user }, error } = await supabase.auth.getUser()
-  if (error || !user) {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+
+  if (authError || !user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { error: deleteError } = await supabase
-    .from('books')
-    .delete()
-    .eq('id', params.id)
-    .eq('user_id', user.id)
+  // Get book ID from URL
+  const url = new URL(req.url)
+  const id = url.pathname.split('/').pop()
 
-  if (deleteError) {
-    return NextResponse.json({ error: deleteError.message }, { status: 500 })
+  if (!id) {
+    return NextResponse.json({ error: 'Missing book ID' }, { status: 400 })
   }
 
-  return NextResponse.json({ message: 'Book deleted' }, { status: 200 })
+  const { error } = await supabase
+    .from('books')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', user.id)
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
+  return NextResponse.json({ message: 'Book deleted successfully' }, { status: 200 })
 }
