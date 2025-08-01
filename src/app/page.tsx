@@ -54,6 +54,9 @@ export default function HomePage() {
   }
 
   const handleDelete = async (bookId: number) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this book?')
+    if (!confirmDelete) return
+
     const { error } = await supabase.from('books').delete().eq('id', bookId)
 
     if (error) {

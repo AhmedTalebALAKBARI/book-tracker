@@ -13,27 +13,28 @@ export default function AddBookPage() {
   const handleAddBook = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser()
+
+    if (userError || !user) {
+      alert('You must be logged in to add a book.')
       router.push('/login')
       return
     }
 
-    const res = await fetch('/api/books', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    const { error: insertError } = await supabase.from('books').insert([
+      {
         title,
         author,
-        status
-      })
-    })
+        status,
+        user_id: user.id
+      }
+    ])
 
-    if (!res.ok) {
-      const { error } = await res.json()
-      alert('Error adding book: ' + error)
+    if (insertError) {
+      alert('Failed to add book: ' + insertError.message)
       return
     }
 
@@ -57,10 +58,7 @@ export default function AddBookPage() {
         required
       />
       <br /><br />
-      <select
-        value={status}
-        onChange={e => setStatus(e.target.value)}
-      >
+      <select value={status} onChange={e => setStatus(e.target.value)}>
         <option value="reading">Reading</option>
         <option value="completed">Completed</option>
         <option value="wishlist">Wishlist</option>
