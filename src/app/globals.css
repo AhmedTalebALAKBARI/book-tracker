@@ -1,0 +1,102 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100vh;
+  width: 100%;
+  display: block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: #0070f3;
+}
+
+/* Buttons */
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0070f3;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #005bb5;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Forms */
+input, select, textarea {
+  font: inherit;
+  padding: 8px;
+  margin-bottom: 12px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.2s ease-in-out;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #0070f3;
+}
+
+/* Utility classes */
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 0 16px;
+}
+
+.center {
+  text-align: center;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
