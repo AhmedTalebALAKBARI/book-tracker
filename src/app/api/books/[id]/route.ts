@@ -14,7 +14,6 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  // ✅ Extract book ID from the request URL
   const url = new URL(req.url)
   const id = url.pathname.split('/').pop()
 
